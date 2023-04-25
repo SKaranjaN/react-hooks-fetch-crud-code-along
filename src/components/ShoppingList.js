@@ -7,39 +7,37 @@ function ShoppingList() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [items, setItems] = useState([]);
 
-
-  //adding useEffect Hook
-  useEffect(() => {
-    fetch("http://localhost:3000/items")
-    .then((res) => res.json())
-    .then((items) => {
-      setItems(items)
-    })
+  //Adding useEffect hook
+  useEffect(()=>{
+    fetch(" http://localhost:4000/items")
+    .then(resp=>resp.json())
+    .then(items=> {
+      setItems(items);
+      console.log(items)    
+  })
   },[])
 
-  function handleUpdateItem(updatedItem) {
-    const updatedItems = items.map((item) => {
+  // add this function!
+  function handleAddItem(newItem) {
+  setItems([...items, newItem])
+  }
+
+   // add this callback function
+   function handleUpdateItem(updatedItem) {
+    const updatedItems = items.map(item=>{
       if(item.id === updatedItem.id){
-        return updatedItem;
+        return updatedItem
+      }else {
+        return item
       }
-      return item;
-    })
+    });
     setItems(updatedItems)
   }
 
-  function handleDeleteItem(deletedItem) {
-    const updatedItems = items.filter((item) => item.id !== deletedItem.id);
-    setItems(updatedItems);
+  function handleDeleteItem(deletedItem){
+    const updatedItems= items.filter(item =>item.id !== deletedItem.id);
+    setItems(updatedItems)
   }
-
-  
-  
-
-  function handleAddItem(newItem){
-    setItems([...items, newItem])
-  }
-
-  // console.log(items)
 
   function handleCategoryChange(category) {
     setSelectedCategory(category);
@@ -53,7 +51,7 @@ function ShoppingList() {
 
   return (
     <div className="ShoppingList">
-      <ItemForm onAddItem={handleAddItem}/>
+      <ItemForm  onAddItem = {handleAddItem}/>
       <Filter
         category={selectedCategory}
         onCategoryChange={handleCategoryChange}
@@ -62,8 +60,7 @@ function ShoppingList() {
         {itemsToDisplay.map((item) => (
           <Item key={item.id} item={item} 
           onUpdateItem={handleUpdateItem}
-          onDeleteItem={handleDeleteItem} 
-          />
+          onDeleteItem={handleDeleteItem}/>
         ))}
       </ul>
     </div>
