@@ -6,20 +6,22 @@ function ItemForm({onAddItem}) {
 
   function handleSubmit(e){
     e.preventDefault();
-    const itemData={
+    const itemData = {
       name: name,
-      category:category,
-      isInCart:false
-    }
-    fetch("http://localhost:4000/items",{
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(itemData)
-  }).then(resp=>resp.json())
-  .then(newItem=>onAddItem(newItem))
-}
+      category: category,
+      isInCart: false
+    };
+    fetch("http://localhost:3000/items", {
+      method:"POST",
+      headers: {
+        "Content-Type":"application/json"
+      },
+      body: JSON.stringify(itemData),
+    })
+    .then((res) => res.json())
+    .then((newItem) => onAddItem(newItem))
+    setName('')
+  }
 
 
   return (
